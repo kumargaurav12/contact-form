@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset='UTF-8'>	
+	<title>Progress Bars</title>	
+	<link rel='stylesheet' href='new-webeasts-form/css/style.css'>
+	<!-- <link rel="stylesheet" type="text/css" href="new-webeasts-form/css/overlay.css"> -->
+	<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script> -->
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.bundle.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.1/parsley.min.js"></script>
+	<style type="text/css">
+		body{
+			font-family: 'MuseoSans_Thin', Arial, Helvetica, sans-serif;
+			font-size: 16px;
+			line-height: 25px;
+		}
+		.nav-menu {
+		    margin-top: 25px;
+		    margin-bottom: 35px;
+		    width: 100%;
+		    float: right;
+		    text-align: right;
+		}
+		.nav-menu ul {
+		    margin: 0;
+		    padding: 0;
+		}
+
+		.nav-menu ul li{
+		    display: inline-block;
+		    /*background-color: #2323;*/
+		    font-size: 18px;
+		    padding: 5px 10px 5px 10px;
+		    border-radius: 5px;
+		}
+		.nav-menu ul li>a {
+		    text-decoration: none;
+		    color: #000;
+		}
+		form{
+			display: none;
+		}
+		ul li{
+			color: #fff;
+		}
+	
+		.join-us-options ul {
+		    margin: 0px;
+		    padding: 0px;
+		    list-style: none;
+		}
+		.join-us-options ul li {
+		    position: relative;
+		    float: left;
+		    width: 33.33%;
+		    height: 260px;
+		    border-right: 1px solid #111;
+		    -webkit-box-sizing: border-box;
+		    -moz-box-sizing: border-box;
+		    box-sizing: border-box;
+		    cursor: pointer;
+		}
+		.join-us-options ul li div {
+		    background-repeat: no-repeat;
+		    background-position: center top;
+		    padding-top: 82px;
+		    text-transform: uppercase;
+		    position: absolute;
+		    width: 100%;
+		    height: 80px;
+		    box-sizing: border-box;
+		    top: 50%;
+		    margin-top: -40px;
+		}
+		.join-us-options ul li{
+			background-color: #232323;
+			padding: 15px 0px 30px;
+			color: #FFF;
+		}
+		.join-us-options ul li:hover{
+			background-color: #74661b;
+			transition: 0.5s;
+		}
+		#progress {
+		    height: 12px;
+		    background-color: rgba(0, 0, 0, 0.23);
+		    padding: 2px;
+		    margin-bottom: 10px;
+		    -webkit-border-radius: 6px;
+		    -moz-border-radius: 6px;
+		    border-radius: 6px;
+		}
+		.overlay-data .content .container {
+		    width: 800px;
+		    margin: 0px auto;
+		}
+		.question .show {
+		    -webkit-transform: translateX(0px);
+		    -moz-transform: translateX(0px);
+		    transform: translateX(0px);
+		    color: #333;
+		    opacity: 1;
+		    z-index: 1;
+		}
+		.questions {
+		    display: none;
+		    position: absolute;
+		    top: 0px;
+		    left: 0px;
+		    width: 100%;
+		    height: 100%;
+		    background-color: #eeeeee;
+		    font-family: 'Verlag A', "Trebuchet MS", Arial, Helvetica, sans-serif;
+		    z-index: 12;
+		}
+		.questions .container {
+		    position: relative;
+		    text-align: left;
+		    width: 900px !important;
+		    height: 100%;
+		}
+		.question label {
+		    font-size: 32px;
+		    line-height: 52px;
+		    display: inline-block;
+		    margin-bottom: 10px;
+		    cursor: pointer;
+		}
+		.questionset .submit_btn {
+		    display: none;
+		    visibility: hidden;
+		    position: relative;
+		    z-index: 10;
+		}
+		.show{
+			display: block;
+		}
+		.hide{
+			display:none;
+		}
+		.keep_going:hover {
+		    padding-right: 35px;
+		}
+		/*===========Form Css ================*/
+		.form_result {
+		    text-align: center;
+		    font-family: 'Verlag A', "Trebuchet MS", Arial, Helvetica, sans-serif;
+		    font-size: 46px;
+		    line-height: 52px;
+		}
+		.ques_footer {
+		    position: absolute;
+		    bottom: 0px;
+		    padding-bottom: 50px;
+		    background-color: #eeeeee;
+		    width: 100%;
+		    height: 115px;
+		    z-index: 2;
+		}
+		.ques_footer::after {
+		    content: ' ';
+		    clear: both;
+		    width: 100%;
+		    display: block;
+		}
+		/*========Progress Bar ===========*/
+		#progress {
+		    height: 12px;
+		    background-color: rgba(0, 0, 0, 0.23);
+		    padding: 2px;
+		    margin-bottom: 10px;
+		    -webkit-border-radius: 6px;
+		    -moz-border-radius: 6px;
+		    border-radius: 6px;
+		}
+		#progress .progress {
+		    width: 0%;
+		    height: 8px;
+		    background-color: rgba(0, 0, 0, 0.56);
+		    -webkit-transition: all 400ms ease;
+		    -moz-transition: all 400ms ease;
+		    transition: all 400ms ease;
+		    -webkit-border-radius: 6px;
+		    -moz-border-radius: 6px;
+		    border-radius: 6px;
+		}
+		#progress .progress{
+		    width: 10%;
+		}
+		.keep_going::before {
+		    content: ' ';
+		    position: absolute;
+		    width: 0px;
+		    height: 100%;
+		    background-color: rgba(0,0,0,0.8);
+		    left: 0px;
+		    top: 0px;
+		    -webkit-transition: all 200ms ease;
+		    -moz-transition: all 200ms ease;
+		    transition: all 200ms ease;
+		}
+		.keep_going {
+		    font-family: 'MuseoSans_Thin', Arial, Helvetica, sans-serif;
+		    float: right;
+		    position: relative;
+		    padding: 8px 15px;
+		    color: #FFF;
+		    background-color: rgba(0,0,0,0.7);
+		    -webkit-border-radius: 4px;
+		    -moz-border-radius: 4px;
+		    border-radius: 4px;
+		    overflow: hidden;
+		    -webkit-transition: all 200ms ease;
+		    -moz-transition: all 200ms ease;
+		    transition: all 200ms ease;
+		    cursor: pointer;
+		}
+		.keep_going span.text {
+		    position: relative;
+		}
+
+		.keep_going span.arrow {
+		    width: 0px;
+		    height: 20px;
+		    position: absolute;
+		    right: 8px;
+		    top: 50%;
+		    margin-top: -10px;
+		    -webkit-transition: all 200ms ease;
+		    -moz-transition: all 200ms ease;
+		    transition: all 200ms ease;
+		    opacity: 0;
+		}
+		.arrow.white::before {
+		    background-image: url(data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTYuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjEyOHB4IiBoZWlnaHQ9IjEyOHB4IiB2aWV3Qm94PSIwIDAgMjY4LjgzMiAyNjguODMyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyNjguODMyIDI2OC44MzI7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPGc+Cgk8cGF0aCBkPSJNMjY1LjE3MSwxMjUuNTc3bC04MC04MGMtNC44ODEtNC44ODEtMTIuNzk3LTQuODgxLTE3LjY3OCwwYy00Ljg4Miw0Ljg4Mi00Ljg4MiwxMi43OTYsMCwxNy42NzhsNTguNjYxLDU4LjY2MUgxMi41ICAgYy02LjkwMywwLTEyLjUsNS41OTctMTIuNSwxMi41YzAsNi45MDIsNS41OTcsMTIuNSwxMi41LDEyLjVoMjEzLjY1NGwtNTguNjU5LDU4LjY2MWMtNC44ODIsNC44ODItNC44ODIsMTIuNzk2LDAsMTcuNjc4ICAgYzIuNDQsMi40MzksNS42NCwzLjY2MSw4LjgzOSwzLjY2MXM2LjM5OC0xLjIyMiw4LjgzOS0zLjY2MWw3OS45OTgtODBDMjcwLjA1MywxMzguMzczLDI3MC4wNTMsMTMwLjQ1OSwyNjUuMTcxLDEyNS41Nzd6IiBmaWxsPSIjRkZGRkZGIi8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+Cg==);
+		}
+		.keep_going .rightarrow {
+			background-image: url();
+			background-position: center center;
+			height: 30px;
+		}
+	</style>
+	<!-- <link rel="stylesheet" type="text/css" href="join_us.css"> -->
+</head>
+
+<body>
+	<!-- <div id="page-wrap">
+		<h1>Progress Bars</h1>	  
+		<p>They should stretch fine to whatever the width of the container element is, or just set it. Also they should stretch fine to whatever height you give .meter. </p>
+		<div class="meter">
+			<span class="w3-grey" style="width: 2%"></span>
+		</div>
+		<button class="btn btn-click">Click me</button>	
+	</div> -->
+	<div class="container">
+		<div class="row">
+			<nav class="nav-menu">
+				<ul>
+					<li><a href="javascript:void(0)">About</a></li>
+					<li><a href="javascript:void(0)" id="join">Join Us</a></li>
+					<li><a href="javascript:void(0)">Contact Us</a></li>
+				</ul>
+			</nav>
+		</div>
+		<div class="row">
+			<div class="overlay-data right active main-container" id="join-us" style="background-image: none;">
+				<div class="backbtn svgicon arrow leftarrow zoomin"></div>
+					<div class="content">
+					    <div class="container">
+					        <h1>WITHOUT YOU, THERE IS NO US.</h1>
+					        <div class="description">We work with incredibly talented people. This collaborative approach consistently yields smart strategy and amazing execution. What we do is not magic, it only looks that way.</div>					        
+					        <div class="short_description">SO STEP RIGHT UP!</div>
+					    
+					    </div>
+
+					    <div class="block">
+					        <div class="join-us-options">
+					            <ul>
+					                <li><div class="client" data-link="client">Client</div></li>
+					                <li><div class="partner" data-link="partner">Partner</div></li>
+					                <li><div class="employee" data-link="employee">Career</div></li>
+					            </ul>
+					        </div>
+					    </div>
+					    
+					    <div class="questions" style="height: 356px;">
+						    <div class="container">
+						        <div class="backbtn svgicon arrow leftarrow zoomin formBackBtn"></div>
+						        <div class="loading"></div>
+						        <div id="info_message"></div>
+
+						    	<form id="client" name="client" class="questionset" action="join-us.php" method="post" enctype="multipart/form-data">
+						        	<div class="question">
+						            	<label>Answer a few questions so we can get to know you.</label>
+						            </div>
+						        	<div class="question">
+						            	<label for="client_name">What is your name?</label>
+						                <input type="text" id="client_name" name="client_name" placeholder="Shokey Malik" class="required" data-error="Name is required" data-linkwith="client_name_span">
+						            </div>
+						            <div class="question">
+						            	<label for="company_specialize">Nice to meet you, <span id="client_name_span"></span>.<br>What does your company specialize in?</label>
+						                <input type="text" id="company_specialize" name="company_specialize" placeholder="Digital Marketing" class="required" data-error="Field is required">
+						            </div>
+						            <div class="question">
+						                <label for="company_name">Interesting. What is the name of your company?</label>
+						                <input type="text" id="company_name" name="company_name" placeholder="WeBeasts" class="required" data-error="Field is required">
+						            </div>
+						            <div class="question">
+						                <label>What service(s) are you looking for?</label>
+						                <ul class="options required" data-error="Choose atleast one">
+						                    <li><label><input type="checkbox" name="help_in1" value="Digital"><span>Digital</span></label></li>
+						                    <li><label><input type="checkbox" name="help_in2" value="Web"><span>Web</span></label></li>
+						                    <li><label><input type="checkbox" name="help_in3" value="Social Media"><span>Social Media</span></label></li>
+						                    <li><label><input type="checkbox" name="help_in4" value="SEM &amp; SEO"><span>SEM &amp; SEO</span></label></li>
+						                    <li><label><input type="checkbox" name="help_in5" value="Strategy"><span>Strategy</span></label></li>
+						                    <li><label><input type="checkbox" name="help_in_other" value="Other" data-show="help_in_optional"><span>Other</span></label></li>
+						                </ul>
+						                <div id="help_in_optional" class="optional">
+						                    <label for="things_like">Things like</label>
+						                    <input type="text" id="client_things_like" name="client_things_like" placeholder="Something else?" data-error="Mention with what else we can help you?">
+						                </div>
+						            </div>
+
+						            <div class="question">
+							            <label for="work_range">If the work you wanted was a car, what kind would it be?</label>
+						                <div class="client_range">
+						                    <div class="left">Maruti 800</div>
+						                    <div class="center"><input type="range" id="work_range" name="work_range" min="1" max="100" step="1" value="50"></div>
+						                    <div class="right">Jaguar</div>
+						                </div>
+						            </div>
+						            
+						            <div class="question">
+						            	<label for="client_coolest_work">What's the coolest work you've ever seen?</label>
+						                <input type="text" id="client_coolest_work" name="client_coolest_work" placeholder="That work...">
+						            	<label for="client_coolest_made">What made it so cool?</label>
+						                <input type="text" id="client_coolest_made" name="client_coolest_made" placeholder="It is awesome coz...">
+						            </div>
+						            <div class="question">
+						            	<label for="client_email">Last thing. What's your email address?</label>
+						                <input type="email" id="client_email" name="client_email" placeholder="info@webeasts.com" class="required" data-error="Enter a valid email address">
+						                <label for="client_phone">And your phone number?</label>
+						                <input type="tel" id="client_phone" name="client_phone" placeholder="(022) 123 - 4567">
+						            </div>
+						            <input type="submit" name="submit_client" class="submit_btn">
+						        </form>
+						    
+						    	<form id="partner" name="partner" class="questionset" action="join-us.php" method="post" enctype="multipart/form-data">
+						        	<div class="question">
+						            	<label>Let's get to know each other.</label>
+						            </div>
+						        	<div class="question">
+						            	<label for="partner_name">What’s your name?</label>
+						                <input type="text" id="partner_name" name="partner_name" placeholder="Shokey Malik" class="required" data-error="Name is required">
+						            	<label for="partner_work_place">Which company do you represent?</label>
+						                <input type="text" id="partner_work_place" name="partner_work_place" placeholder="Webeasts" class="required" data-error="Field is required" data-linkwith="partner_company_span">
+						            </div>
+						            <div class="question">
+						            	<label for="partner_site">Where can we find you or your company on the internet?</label>
+						                <input type="text" id="partner_site" name="partner_site" placeholder="http://www.webeasts.com/" class="required" data-error="Field is required">
+						            </div>
+						            <div class="question">
+						                <label>What does <span id="partner_company_span"></span> specialize in?</label>
+						                <ul class="options required" data-error="Choose atleast one">
+							                <li>
+							                	<label><input type="checkbox" name="specialize1" value="Production"><span>Production</span></label>
+							                </li>
+							                <li>
+							                	<label><input type="checkbox" name="specialize2" value="Illustration"><span>Illustration</span></label>
+							                </li>
+							                <li>
+							                	<label><input type="checkbox" name="specialize3" value="Animation"><span>Animation</span></label>
+							                </li>
+							                <li>
+							                	<label><input type="checkbox" name="specialize4" value="Photography"><span>Photography</span></label>
+							                </li>
+							                <li>
+							                	<label><input type="checkbox" name="specialize5" value="VC"><span>VC</span></label>
+							                </li>
+							                <li>
+							                	<label><input type="checkbox" name="specialize6" value="PE"><span>PE</span></label>
+							                </li>
+							                <li>
+							                	<label><input type="checkbox" name="specialize7" value="Angel Investor"><span>Angel Investor</span></label>
+							                </li>
+							                <li>
+							                	<label><input type="checkbox" name="specialize_other" value="Other" data-show="specialize"><span>Other</span></label>
+							                </li>
+						                </ul>
+						                <div id="specialize" class="optional">
+						                    <label for="partner_things_like">Things like</label>
+						                    <input type="text" id="partner_things_like" name="partner_things_like" placeholder="Something else?" data-error="Mention with what else we can help you?">
+						                </div>
+						            </div>
+						            <div class="question">
+						            	<label for="partner_coolest_work">What's the coolest work you've ever seen?</label>
+						                <input type="text" id="partner_coolest_work" name="partner_coolest_work" placeholder="That work...">
+						            	<label for="partner_coolest_made">What made it so cool?</label>
+						                <input type="text" id="partner_coolest_made" name="partner_coolest_made" placeholder="It is awesome coz...">
+						            </div>
+						            <div class="question">
+							            <label for="partner_worked_with">What clients and partners have you worked with?</label>
+						                <input type="text" id="partner_worked_with" name="partner_worked_with" placeholder="Google, Yahoo, Bing etc." class="required" data-error="Field is required">
+						            </div>
+						            <div class="question">
+						            	<label for="partner_email">Last thing. What's your email address?</label>
+						                <input type="email" id="partner_email" name="partner_email" placeholder="info@webeasts.com" class="required" data-error="Enter a valid email address">
+						                <label for="partner_phone">And your phone number?</label>
+						                <input type="tel" id="partner_phone" name="partner_phone" placeholder="(022) 123 - 4567">
+						            </div>
+						            <input type="submit" name="submit_partner" class="submit_btn">
+						        </form>
+						        
+						    	<form id="employee" name="employee" class="questionset" action="join-us.php" method="post" enctype="multipart/form-data">
+						            <div class="question">
+						                <label>Which department do you want to join?</label>
+						                <ul class="options required" data-error="Choose atleast one">
+						                    <li>
+						                    	<label><input type="checkbox" name="profile1" value="Designing"><span>Designing</span></label>
+						                    </li>
+						                    <li>
+						                    	<label><input type="checkbox" name="profile2" value="Web"><span>Web</span></label>
+						                    </li>
+						                    <li>
+						                    	<label><input type="checkbox" name="profile3" value="Software Dev"><span>Software Dev</span></label>
+						                    </li>
+						                    <li>
+						                    	<label><input type="checkbox" name="profile4" value="Mobile App"><span>Mobile App</span></label>
+						                    </li>
+						                    <li>
+						                    	<label><input type="checkbox" name="profile5" value="Business Dev"><span>Business Dev</span></label>
+						                    </li>
+						                    <li>
+						                    	<label><input type="checkbox" name="profile6" value="Internship"><span>Internship</span></label>
+						                    </li>
+						                    <li>
+						                    	<label><input type="checkbox" name="profile7" value="Social Media"><span>Social Media</span></label>
+						                    </li>
+						                    <li>
+						                    	<label><input type="checkbox" name="profile_other" value="Other" data-show="employee_profile_optional"><span>Other</span></label>
+						                    </li>
+						                </ul>
+						                <div id="employee_profile_optional" class="optional">
+						                    <label for="employee_profile_other">Things like</label>
+						                    <input type="text" id="employee_profile_other" name="employee_profile_other" placeholder="Something else?" data-error="Mention with what else we can help you?">
+						                </div>
+						            </div>
+						        	<div class="question">
+						            	<label for="employee_name">What’s your name?</label>
+						                <input type="text" id="employee_name" name="employee_name" placeholder="Shokey Malik" class="required" data-error="Your name please?" data-linkwith="employee_name_span">
+						            </div>
+						            <div class="question">
+						            	<label for="employee_email">What's your email address?</label>
+						                <input type="email" id="employee_email" name="employee_email" placeholder="info@webeasts.com" class="required" data-error="Enter a valid email address">
+						            </div>
+						        	<div class="question">
+						            	<label>Great.<br>Now, <span id="employee_name_span"></span>, let’s really get to know each other.</label>
+						            </div>
+						            <div class="question">
+						            	<label for="employee_coolest_work">What's the coolest work you've ever seen?</label>
+						                <input type="text" id="employee_coolest_work" name="employee_coolest_work" placeholder="That work...">
+						            	<label for="employee_coolest_made">What made it so cool?</label>
+						                <input type="text" id="employee_coolest_made" name="employee_coolest_made" placeholder="It is awesome coz...">
+						            </div>
+						        	<div class="question">
+						            	<label for="employee_portfolio">Do you have a portfolio?</label>
+						                <input type="text" id="employee_portfolio" name="employee_portfolio" placeholder="http://portfolio.webeasts.com/">
+						            </div>
+						            <div class="question">
+						            	<label>Ok. Do you have a resume?</label>
+						                <div class="resume">
+						                	<label for="file1">
+						                    	<input type="file" id="file1" name="file1" accept="application/pdf, application/msword, txt/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/x-zip-compressed">
+						                        Choose File
+						                    </label>
+						                    <span id="resume_file">No resume file choosen.</span>
+						                </div>
+						                <div class="desc">Only .pdf, .doc, .docx, .txt, .zip files accepted.</div>
+						            </div>
+						            <input type="submit" name="submit_employee" class="submit_btn">
+						        </form>
+						        
+						        <div class="form_result question">
+						        	<div class="client message">Thanks!<br>This is the beginning of a beautiful relationship.</div>
+						            <div class="partner message">Thanks!<br>Hope to have a healthy partnership.</div>
+						            <div class="employee message">Thanks!<br>We’ll shout soon.</div>
+						            <div class="loading"></div>
+						        </div>
+						        
+						        <div class="ques_footer">
+						            <div id="progress"><div class="progress"></div></div>
+						            <div class="keep_going">
+						            	<span class="text">Keep Going</span>
+						                <span class="arrow white rightarrow"></span>
+						            </div>
+						        </div>
+						    </div>
+					    </div>
+					</div>
+					<!--code snippet by sachida -->
+			<!-- code snippet by sachida -->
+			</div>
+		</div>
+	</div>
+<!--========== Progress Bar ============ -->
+<script>
+	jQuery(function() {
+		jQuery(".meter > span").each(function() {
+			jQuery(this)
+				.data("origWidth", $(this).width())
+				.width(0)
+				.animate({
+					width: $(this).data("origWidth")
+				}, 1200);
+		});
+	});
+</script>
+
+<script type="text/javascript">
+	var num =0;
+	jQuery(".btn-click").on("click",function(){
+		if(parseInt(num)< 100){
+			num =parseInt(num)+10;
+			// jQuery(".w3-grey").css("width",num);
+			console.log("number :",num);
+			console.info("Type Of :",typeof(num));
+			var d= num+"%";
+			console.warn("Percent :",d);
+			jQuery(".w3-grey").css("width",d);
+		}
+	});
+	jQuery(".nav-menu ul li").on("click",function(){
+	    // console.warn(jQuery(this).find("a").text());
+	    var str = jQuery(this).find("a").text(),
+	    nav_menu_click = str.replace(/\s/g, '-').toLowerCase();
+	    if(nav_menu_click === "about"){
+	    	return false;
+	    	console.info("About Click");
+	    }else if(nav_menu_click === "contact-us"){
+	    	return false;
+	    	console.info("Contact US");
+	    }else if(nav_menu_click === "join-us"){
+	    	jQuery(".overlay-data").addClass("active");
+	    }
+	});
+	// ========== Toggle Active Class ====================
+	jQuery(".overlay-data >.backbtn").on("click",function(){
+		jQuery(".overlay-data").toggleClass( "active");
+	});
+	// ============= Get Data Link Value =================
+	jQuery(".join-us-options ul li").on("click",function(){
+		var form = jQuery(this).children().data("link"),visible;
+		console.log("Form :",form);
+		if(form === "client"){
+			jQuery(".questions").css({"display":"block"});
+			jQuery("#client").css({"display":"block"});
+			jQuery("#employee").css({"display":"none"});
+			jQuery("#partner").css({"display":"none"});
+			jQuery(form).closest("div").addClass("show");
+			visible = jQuery("#client:visible").length;
+			if(visible ==1){
+				jQuery(".ques_footer").addClass("show");
+			}
+			var count = jQuery("#client").siblings().length;
+			// second Part of Client Form
+			// jQuery("#client").children().css("display","block");
+			// ================== Add Show Class to Client Div ================
+			jQuery("#client > div").eq(0).addClass("show");
+			// jQuery("#progress .progress").css("width","10%");
+			jQuery("#client").attr("data-parsley-validate","");
+		}else if(form === "partner"){
+			jQuery(".questions").css({"display":"block"});
+			jQuery("#partner").css({"display":"block"});
+			jQuery("#client").css({"display":"none"});
+			jQuery("#employee").css({"display":"none"});
+			jQuery("#partner").attr("data-parsley-validate","");
+			jQuery(form).closest("div").addClass("show");
+			visible = jQuery("#partner:visible").length;
+			if(visible ==1){
+				jQuery(".ques_footer").addClass("show");
+			}
+			var count = jQuery("#partner").siblings().length;
+			jQuery("#partner > div").eq(0).addClass("show");
+			jQuery("#partner").attr("data-parsley-validate","");
+		}else if(form === "employee"){
+			jQuery(".questions").css({"display":"block"});
+			jQuery("#employee").css({"display":"block"});
+			jQuery("#partner").css({"display":"none"});
+			jQuery("#client").css({"display":"none"});
+			jQuery("#employee").attr("data-parsley-validate","");
+			jQuery(form).closest("div").addClass("show");
+			visible = jQuery("#partner:visible").length;
+			if(visible ==1){
+				jQuery(".ques_footer").addClass("show");
+			}
+			var count = jQuery("#partner").siblings().length;
+			jQuery("#employee > div").eq(0).addClass("show");
+			jQuery("#employee").attr("data-parsley-validate","");
+		}
+	});
+	// ============== Form Backbtn Click ======
+	jQuery(".zoomin").on("click",function(){
+		jQuery(this).parents(".questions").css({"display":"none","transition":"all 200ms ease"});
+	});
+
+	var formCount  ; var num =10;
+	var div = 1,rmvdiv =0;
+	var form  = jQuery("#client").siblings().length;
+	formCount =   parseInt(form)+1;
+	console.info("Count Table :",formCount);
+	jQuery(".keep_going").on("click",function(){
+		console.info("ParseInt Form Count :",formCount);
+		if(formCount > 0){
+			console.log("remove :",rmvdiv);
+			// jQuery("#client > div").eq(rmvdiv).removeClass("show");
+			jQuery("#client > div").eq(rmvdiv).addClass("hide");
+			jQuery("#client > div").eq(div).addClass("show");
+			console.log("Div ",div);
+			if(formCount>0){
+				var w = 100/formCount;
+			}
+			console.warn(w);
+			console.warn("Form Count :",formCount);
+			if(formCount==1){
+				jQuery(".client .message").addClass("show");
+			}
+			var d= w+"%";
+			jQuery("#progress .progress").css("width",d);
+			formCount--;
+			rmvdiv++
+			div++;
+		}
+	});
+		// jQuery(".progress");
+</script>
+<!-- ====Conterol Progressbar -->
+<script type="text/javascript">
+var num =0;
+jQuery(".btn-click").on("click",function(){
+	if(parseInt(num)< 100){
+		num =parseInt(num)+10;
+		// jQuery(".w3-grey").css("width",num);
+		console.log("number :",num);
+		console.info("Type Of :",typeof(num));
+		var d= num+"%";
+		console.warn("Percent :",d);
+		jQuery(".w3-grey").css("width",d);
+
+	}
+});
+</script>
+<script type="text/javascript">
+var win_height = jQuery(window).height();
+jQuery(".questions").css("height",win_height);
+jQuery(window).resize(function() {
+	var height = jQuery(window).height();
+	console.warn(height);
+	jQuery(".questions").css("height",height);
+});
+
+</script>
+</body>
+</html>
